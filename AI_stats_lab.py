@@ -1,9 +1,4 @@
 
----
-
-## `AI_stats_lab.py`
-
-```python
 import numpy as np
 
 
@@ -22,7 +17,16 @@ def joint_cdf_unit_square(x, y):
         y                   if x >= 1 and 0 < y < 1
         1                   if x >= 1 and y >= 1
     """
-    return min(1,max(0, x)) * (min(1, max(0, y)) 
+    # return min(1,max(0, x)) * (min(1, max(0, y))
+    if x <= 0 or y <= 0:
+        return 0.0
+    if x >= 1 and y >= 1:
+        return 1.0
+    if x >= 1:
+        return y
+    if y >= 1:
+        return x
+    return x * y
 
 
 def rectangle_probability(x1, x2, y1, y2):
