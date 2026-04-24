@@ -22,7 +22,7 @@ def joint_cdf_unit_square(x, y):
         y                   if x >= 1 and 0 < y < 1
         1                   if x >= 1 and y >= 1
     """
-    pass
+    return min(1,max(0, x)) * (min(1, max(0, y)) 
 
 
 def rectangle_probability(x1, x2, y1, y2):
@@ -30,7 +30,11 @@ def rectangle_probability(x1, x2, y1, y2):
     Compute P(x1 < X <= x2, y1 < Y <= y2)
     using the joint CDF rectangle formula.
     """
-    pass
+    all2 = joint_cdf_unit_square(x2, y2)
+    x1y2 = joint_cdf_unit_square(x1, y2)
+    x2y1 = joint_cdf_unit_square(x2, y1)
+    all1 = joint_cdf_unit_square(x1, y1)
+    return all2 - x1y2 - x2y1 + all1
 
 
 def marginal_fx_unit_square(x):
@@ -41,8 +45,7 @@ def marginal_fx_unit_square(x):
         1   if 0 < x < 1
         0   otherwise
     """
-    pass
-
+    return float(0 < x < 1)
 
 def marginal_fy_unit_square(y):
     """
@@ -52,7 +55,7 @@ def marginal_fy_unit_square(y):
         1   if 0 < y < 1
         0   otherwise
     """
-    pass
+    return float(0 < y < 1)
 
 
 # -------------------------------------------------
@@ -70,25 +73,36 @@ def joint_pmf_heads(x, y):
         x=0      1/4   1/4    0
         x=1       0    1/4   1/4
     """
-    pass
-
+    hash_table = {(0,0), (0,1), (1,1), (1,2)}
+    return 0.25 if (x,y) in hash_table else 0.0
 
 def marginal_px_heads(x):
     """
     Return P_X(x) by summing the joint PMF over y.
     """
-    pass
+    return 0.5 if x in (0,1) else 0
 
 
 def marginal_py_heads(y):
     """
     Return P_Y(y) by summing the joint PMF over x.
     """
-    pass
+    return 0.5 if y in (0,1) else 0
 
 
 def check_independence_heads():
     """
     Return True if X and Y are independent, else False.
     """
-    pass
+    PX = {0: 0.5, 1: 0.5}
+    PY = {0: 0.25, 1: 0.5, 2: 0.25}
+
+    PXY = {
+        (0,0): 0.25, (0,1): 0.25,
+        (1,1): 0.25, (1,2): 0.25
+    }
+
+    for (x, y), p in PXY.items():
+        if abs(p - PX[x] * PY[y]) > 1e-12:
+            return False
+    return True
