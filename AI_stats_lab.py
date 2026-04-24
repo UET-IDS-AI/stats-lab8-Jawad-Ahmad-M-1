@@ -91,7 +91,13 @@ def marginal_py_heads(y):
     """
     Return P_Y(y) by summing the joint PMF over x.
     """
-    return 0.5 if y in (0,1) else 0
+    if y == 0:
+        return 0.25
+    if y == 1:
+        return 0.5
+    if y == 2:
+        return 0.25
+    return 0.0
 
 
 def check_independence_heads():
